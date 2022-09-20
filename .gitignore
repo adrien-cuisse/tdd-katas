@@ -1,0 +1,9 @@
+
+# IDE junk
+*/**/.idea/
+
+# Object files (C, ASM)
+*/**/*.o
+
+# Binaries
+*/**/bin/*
