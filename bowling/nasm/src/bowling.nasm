@@ -8,6 +8,7 @@ global init_game
 
 
 section .data
+	strike_bonus_active db 0
 	spare_bonus_active db 0
 	remaining_throws db 2
 	remaining_pins db 10
@@ -35,27 +36,36 @@ section .text
 		call clamp_knocked_pins_count
 		add [rel total_score], rax
 		sub [rel remaining_pins], rax
+		dec byte [rel remaining_throws]
 
-		; apply spare bonus
+		; check spare bonus
 		cmp byte [rel spare_bonus_active], 1
-		jne .no_spare_bonus
+		jne .check_strike_bonus
 		add [rel total_score], rax
 		mov byte [rel spare_bonus_active], 0
 
-		.no_spare_bonus:
-		dec byte [rel remaining_throws]
-		jz .no_more_throws
+		.check_strike_bonus:
+		cmp byte [rel strike_bonus_active], 0
+		je .no_bonus
+		add [rel total_score], rax
+        dec byte [rel strike_bonus_active]
+
+		.no_bonus:
+		cmp byte [rel remaining_throws], 0
+		je .no_more_throws
 
 		; 1 remaining throw, no more remaining pins = strike was made
 		cmp byte [rel remaining_pins], 0
 		jnz .nothing_particular_about_throw
+		mov byte [rel strike_bonus_active], 2
+		jmp .frame_ended
 
 		.no_more_throws:
 		cmp byte [rel remaining_pins], 0
-		jne .spare_did_not_occur
+		jne .frame_ended
 		mov byte [rel spare_bonus_active], 1
 
-		.spare_did_not_occur:
+		.frame_ended:
 		call start_new_frame
 		.nothing_particular_about_throw:
 		ret

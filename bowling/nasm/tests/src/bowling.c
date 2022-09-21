@@ -151,3 +151,20 @@ Test(bowling, spare_gives_next_roll_as_bonus_points, .init=init_game)
 		"Roll right after a spare should give twice as many points, got %d instead of 14",  pointsFromRoll3
 	);
 }
+
+Test(bowling, strike_gives_next_2_next_roll_as_bonus_points, .init=init_game)
+{
+	// given a strike
+	roll(10);
+
+	// when making 2 extra rolls
+	roll(3);
+	roll(4);
+	int scoreAfterBonusRolls = score();
+	// then the 2 next rolls should give twice as many points as usual
+	cr_assert_eq(
+		24,
+		scoreAfterBonusRolls,
+		"Rolls right after strike should give twice as many points, got %d instead of 24", scoreAfterBonusRolls
+	);
+}
