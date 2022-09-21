@@ -94,3 +94,23 @@ Test(bowling, maximum_knocked_pins_per_frame_is_10, .init=initGame)
 		"There should be only 10 pins per frame, got %d", knocksLimitPerFrame
 	);
 }
+
+
+Test(bowling, a_new_frame_starts_after_2_throws, .init=initGame)
+{
+	// given 2 throws so far
+	roll(3);
+	roll(4);
+
+	// when checking how many pins are in the alley for throw 3
+	int scoreAfterThrow2 = score();
+	roll(10);
+	int pinsAvailableForThrow3 = score() - scoreAfterThrow2;
+
+	// then it should be the initial number of pins
+	cr_assert_eq(
+		pinsAvailableForThrow3,
+		10,
+		"The 10 pins should be back on the alley after 2 trows, found %d", pinsAvailableForThrow3
+	);
+}

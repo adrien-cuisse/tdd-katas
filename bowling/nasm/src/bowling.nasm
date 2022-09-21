@@ -8,6 +8,7 @@ global initGame
 
 
 section .data
+	remaining_throws db 2
 	remaining_pins db 10
 	total_score dw 0
 
@@ -20,6 +21,7 @@ section .text
 	initGame:
 		mov word [rel total_score], 0
 		mov byte [rel remaining_pins], 10
+		mov byte [rel remaining_throws], 2
 		ret
 
 	;
@@ -31,6 +33,12 @@ section .text
 		call clamp_knocked_pins_count
 		add [rel total_score], rax
 		sub [rel remaining_pins], rax
+
+		dec byte [rel remaining_throws]
+		jnz .not_new_frame
+			call start_new_frame
+
+		.not_new_frame:
 		ret
 
 	;
@@ -61,4 +69,12 @@ section .text
 		mov r8, [rel remaining_pins]
 		cmp rax, r8
 		cmovg rax, r8
+		ret
+
+	;
+	; Starts a new frame, putting pins back on the alley and resetting throw counter
+	;
+	start_new_frame:
+		mov byte [rel remaining_pins], 10
+		mov byte [rel remaining_throws], 2
 		ret
