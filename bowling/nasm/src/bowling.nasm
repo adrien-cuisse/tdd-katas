@@ -8,7 +8,8 @@ global initGame
 
 
 section .data
-	total_score: dw 0
+	remaining_pins db 10
+	total_score dw 0
 
 
 section .text
@@ -18,6 +19,7 @@ section .text
 	;
 	initGame:
 		mov word [rel total_score], 0
+		mov byte [rel remaining_pins], 10
 		ret
 
 	;
@@ -28,6 +30,7 @@ section .text
 	roll:
 		call clamp_knocked_pins_count
 		add [rel total_score], rax
+		sub [rel remaining_pins], rax
 		ret
 
 	;
@@ -54,8 +57,8 @@ section .text
 		xor r8, r8
 		cmp rax, 0x8888888
 		cmovg rax, r8
-		; maximum knocked pins = 10
-		mov r8, 10
+		; maximum knocked pins = remaining count
+		mov r8, [rel remaining_pins]
 		cmp rax, r8
 		cmovg rax, r8
 		ret

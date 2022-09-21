@@ -76,3 +76,21 @@ Test(bowling, no_less_than_0_pins_can_be_knocked_in_a_throw, .init=initGame)
 		"Negative knocked pins count should be fixed, got %d", knockedPins
 	);
 }
+
+
+Test(bowling, no_more_than_10_pins_can_be_knocked_in_same_frame, .init=initGame)
+{
+	// given 2 throws in the same frame, trying to knock more pins than the limit
+	roll(5);
+	roll(6);
+
+	// when checking how many pins were considered
+	int knocksLimitPerFrame = score();
+
+	// then there should be only 10
+	cr_assert_eq(
+		10,
+		knocksLimitPerFrame,
+		"There should be only 10 pins per frame, got %d", knocksLimitPerFrame
+	);
+}
