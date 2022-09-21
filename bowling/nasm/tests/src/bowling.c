@@ -132,3 +132,22 @@ Test(bowling, strike_ends_the_frame, .init=init_game)
 		"The 10 pins should be back on the alley after a strike"
 	);
 }
+
+Test(bowling, spare_gives_next_roll_as_bonus_points, .init=init_game)
+{
+	// given a spare
+	roll(4);
+	roll(6);
+
+	// when making a 3rd roll
+	int scoreAfterSpare = score();
+	roll(7);
+	int pointsFromRoll3 = score() - scoreAfterSpare;
+
+	// then the 3rd roll should give twice as many points as usual
+	cr_assert_eq(
+		7 * 2,
+		pointsFromRoll3,
+		"Roll right after a spare should give twice as many points, got %d instead of 14",  pointsFromRoll3
+	);
+}
