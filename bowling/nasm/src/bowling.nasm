@@ -1,9 +1,10 @@
 
-BITS 64
+bits 64
 
 
 global roll
 global score
+global initGame
 
 
 section .data
@@ -13,18 +14,20 @@ section .data
 section .text
 
 	;
+	; Initializes the game
+	;
+	initGame:
+		mov word [rel total_score], 0
+		ret
+
+	;
 	; Adds the number of knocked pins to the current frame
 	;
 	; -> rdi: the number of knocked pins
 	;
 	roll:
-		; set knocked pins to 10 if greater
-		cmp rdi, 10
-		jle .score_pins
-		mov rdi, 10
-
-		.score_pins:
-			add [rel total_score], rdi
+		call clamp_knocked_pins_count
+		add [rel total_score], rax
 		ret
 
 	;
@@ -34,4 +37,25 @@ section .text
 	;
 	score:
         mov rax, [rel total_score]
+		ret
+
+	;
+	; Puts pins count in range [0;10]
+	;
+	; Alters r8
+	;
+	; -> rdi: the pins count to clamp
+	;
+	; <- rax: the clamped value, or input if already in range
+	;
+	clamp_knocked_pins_count:
+		mov rax, rdi
+		; minimum knocked pins = 0
+		xor r8, r8
+		cmp rax, 0x8888888
+		cmovg rax, r8
+		; maximum knocked pins = 10
+		mov r8, 10
+		cmp rax, r8
+		cmovg rax, r8
 		ret
