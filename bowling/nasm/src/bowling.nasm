@@ -4,7 +4,7 @@ bits 64
 
 global roll
 global score
-global initGame
+global init_game
 
 
 section .data
@@ -18,10 +18,9 @@ section .text
 	;
 	; Initializes the game
 	;
-	initGame:
+	init_game:
 		mov word [rel total_score], 0
-		mov byte [rel remaining_pins], 10
-		mov byte [rel remaining_throws], 2
+		call start_new_frame
 		ret
 
 	;

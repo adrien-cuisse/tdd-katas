@@ -6,12 +6,12 @@
 
 extern void roll(int);
 extern int score(void);
-extern void initGame(void);
+extern void init_game(void);
 
 
 
 
-Test(bowling, initial_score_is_0, .init=initGame)
+Test(bowling, initial_score_is_0, .init=init_game)
 {
 	// given no throws made so far
 
@@ -27,7 +27,7 @@ Test(bowling, initial_score_is_0, .init=initGame)
 }
 
 
-Test(bowling, knocking_1_pin_gives_1_point, .init=initGame)
+Test(bowling, knocking_1_pin_gives_1_point, .init=init_game)
 {
 	// given 1 pin knocked down
 	roll(1);
@@ -44,7 +44,7 @@ Test(bowling, knocking_1_pin_gives_1_point, .init=initGame)
 }
 
 
-Test(bowling, alley_contains_at_most_10_pins, .init=initGame)
+Test(bowling, alley_contains_at_most_10_pins, .init=init_game)
 {
 	// given a try to knock more pins than how many are on the alley
 	roll(11);
@@ -61,7 +61,7 @@ Test(bowling, alley_contains_at_most_10_pins, .init=initGame)
 }
 
 
-Test(bowling, minimum_knocked_pins_count_is_0, .init=initGame)
+Test(bowling, minimum_knocked_pins_count_is_0, .init=init_game)
 {
 	// given an initial score
 	int initialScore = score();
@@ -78,7 +78,7 @@ Test(bowling, minimum_knocked_pins_count_is_0, .init=initGame)
 }
 
 
-Test(bowling, maximum_knocked_pins_per_frame_is_10, .init=initGame)
+Test(bowling, maximum_knocked_pins_per_frame_is_10, .init=init_game)
 {
 	// given 2 throws in the same frame, trying to knock more pins than the limit
 	roll(5);
@@ -96,7 +96,7 @@ Test(bowling, maximum_knocked_pins_per_frame_is_10, .init=initGame)
 }
 
 
-Test(bowling, a_new_frame_starts_after_2_throws, .init=initGame)
+Test(bowling, a_new_frame_starts_after_2_throws, .init=init_game)
 {
 	// given 2 throws so far
 	roll(3);
