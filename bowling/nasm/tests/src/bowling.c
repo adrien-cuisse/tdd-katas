@@ -35,7 +35,7 @@ Test(bowling, knocking_1_pin_gives_1_point, .init=initGame)
 	// when checking the score
 	int currentScore = score();
 
-	// then the total score should be 1
+	// then it should be 1
 	cr_assert_eq(
 		1,
 		currentScore,
@@ -44,41 +44,41 @@ Test(bowling, knocking_1_pin_gives_1_point, .init=initGame)
 }
 
 
-Test(bowling, no_more_than_10_pins_can_be_knocked_in_a_single_throw, .init=initGame)
+Test(bowling, alley_contains_at_most_10_pins, .init=initGame)
 {
-	// given a try to knock more pins than are left
+	// given a try to knock more pins than how many are on the alley
 	roll(11);
 
 	// when checking how many pins were considered
-	int knockedPins = score();
+	int maxPinsOnTheAlley = score();
 
 	// then there should be only 10
 	cr_assert_eq(
 		10,
-		knockedPins,
-		"There should be only 10 pins per frame, got %d", knockedPins
+		maxPinsOnTheAlley,
+		"There should be at most 10 pins on the alley, got %d", maxPinsOnTheAlley
 	);
 }
 
 
-Test(bowling, no_less_than_0_pins_can_be_knocked_in_a_throw, .init=initGame)
+Test(bowling, minimum_knocked_pins_count_is_0, .init=initGame)
 {
-	// given a try to knock a negative amount of pins
+	// given an initial score
+	int initialScore = score();
+
+	// when trying to knock a negative amount of pins
 	roll(-1);
 
-	// when checking how many pins were considered
-	int knockedPins = score();
-
-	// then there should be only 10
+	// then score should have been affected
 	cr_assert_eq(
-		0,
-		knockedPins,
-		"Negative knocked pins count should be fixed, got %d", knockedPins
+		initialScore,
+		score(),
+		"Negative knocked pins shouldn't affect the score"
 	);
 }
 
 
-Test(bowling, no_more_than_10_pins_can_be_knocked_in_same_frame, .init=initGame)
+Test(bowling, maximum_knocked_pins_per_frame_is_10, .init=initGame)
 {
 	// given 2 throws in the same frame, trying to knock more pins than the limit
 	roll(5);
