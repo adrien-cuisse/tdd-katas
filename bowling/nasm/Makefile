@@ -74,7 +74,7 @@ clean-tests-binaries:
 
 .PHONY: run-tests
 run-tests: tests-binaries
-	@for TESTS_BINARY in $(TESTS_BINARIES); do ./$$TESTS_BINARY -- verbose; done
+	@for TESTS_BINARY in $(TESTS_BINARIES); do ./$$TESTS_BINARY; done
 
 
 
