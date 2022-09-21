@@ -18,7 +18,13 @@ section .text
 	; -> rdi: the number of knocked pins
 	;
 	roll:
-		add [rel total_score], rdi
+		; set knocked pins to 10 if greater
+		cmp rdi, 10
+		jle .score_pins
+		mov rdi, 10
+
+		.score_pins:
+			add [rel total_score], rdi
 		ret
 
 	;
