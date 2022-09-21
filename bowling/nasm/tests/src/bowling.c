@@ -114,3 +114,21 @@ Test(bowling, a_new_frame_starts_after_2_throws, .init=init_game)
 		"The 10 pins should be back on the alley after 2 trows, found %d", pinsAvailableForThrow3
 	);
 }
+
+
+Test(bowling, strike_ends_the_frame, .init=init_game)
+{
+	// given a strike
+	roll(10);
+	int scoreAfterStrike = score();
+
+	// when making another throw
+	roll(1);
+
+	// then pins should have been available for throw 2, and new points be counted
+	cr_assert_gt(
+		score(),
+		scoreAfterStrike,
+		"The 10 pins should be back on the alley after a strike"
+	);
+}

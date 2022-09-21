@@ -34,10 +34,14 @@ section .text
 		sub [rel remaining_pins], rax
 
 		dec byte [rel remaining_throws]
-		jnz .not_new_frame
-			call start_new_frame
+		jz .frame_ended
 
-		.not_new_frame:
+		; 1 remaining throw, no more remaining pins = strike was made
+		cmp byte [rel remaining_pins], 0
+		jnz .nothing_particular_about_throw
+		.frame_ended:
+			call start_new_frame
+		.nothing_particular_about_throw:
 		ret
 
 	;
