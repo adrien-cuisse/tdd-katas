@@ -168,3 +168,20 @@ Test(bowling, strike_gives_next_2_next_roll_as_bonus_points, .init=init_game)
 		"Rolls right after strike should give twice as many points, got %d instead of 24", scoreAfterBonusRolls
 	);
 }
+
+Test(bowling, game_lasts_10_frames, .init=init_game)
+{
+	// given 21 throws
+	for (int throws = 0; throws < 21; throws++)
+		roll(1);
+
+	// when checking the total score
+	int totalScore = score();
+
+	// then only 10 frames should be included
+	cr_assert_eq(
+		20,
+		totalScore,
+		"Game must last 10 frames only, was able to score %d", totalScore
+	);
+}
